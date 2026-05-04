@@ -98,6 +98,21 @@ export class Msal2AuthenticationService implements IAuthenticationService {
         }
     }
 
+    public async clearCache(): Promise<void> {
+        this.resourceTokenMap.clear();
+        await this.msalObj.initialize();
+        await this.msalObj.clearCache();
+        const clientId = this.config.clientId;
+        for (const storage of [localStorage, sessionStorage]) {
+            const keys = Object.keys(storage);
+            for (const key of keys) {
+                if (key.startsWith(`msal.${clientId}.`) || key.includes(clientId)) {
+                    storage.removeItem(key);
+                }
+            }
+        }
+    }
+
     public async isAuthenticated(): Promise<boolean> {
         await this.msalObj.initialize();
         const accounts = this.msalObj.getAllAccounts();

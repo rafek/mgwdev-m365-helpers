@@ -17,6 +17,10 @@ export class NodeAppOnlyAuthenticationService implements IAuthenticationService{
     public async logout(): Promise<void> {
     }
 
+    public async clearCache(): Promise<void> {
+        this.clientApp = new msal.ConfidentialClientApplication(this.msalConfig);
+    }
+
     public async isAuthenticated(): Promise<boolean> {
         return true;
     }

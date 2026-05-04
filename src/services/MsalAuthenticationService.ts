@@ -55,6 +55,18 @@ export class MsalAuthenticationService implements IAuthenticationService {
         this.resourceTokenMap.clear();
     }
 
+    public async clearCache(): Promise<void> {
+        this.resourceTokenMap.clear();
+        for (const storage of [localStorage, sessionStorage]) {
+            const keys = Object.keys(storage);
+            for (const key of keys) {
+                if (key.startsWith(`msal.${this.clientId}.`) || key.includes(this.clientId)) {
+                    storage.removeItem(key);
+                }
+            }
+        }
+    }
+
     public async getAccessToken(resource: string = "https://graph.microsoft.com"): Promise<string> {
         let token = this.resourceTokenMap.get(resource);
         if (token && TokenUtils.isTokenValid(token)) {
