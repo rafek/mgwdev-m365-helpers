@@ -1,5 +1,6 @@
 import { queueRequest } from "../utils/FunctionUtils";
 import { generateGuid, generateRandomString } from "../utils/IdGenerator";
+import { MsalCacheUtils } from "../utils/MsalCacheUtils";
 import { TokenUtils } from "../utils/TokenUtils";
 import { IAuthenticationService } from "./IAuthenticationService";
 import { IMsalAuthenticationConfig } from "./Msal2AuthenticationService";
@@ -230,6 +231,11 @@ export class MSAL2CustomAuthService implements IAuthenticationService {
                 this.cacheService.remove(key);
             }
         }
+    }
+
+    public async clearCache(): Promise<void> {
+        this.resourceTokenMap.clear();
+        MsalCacheUtils.clearStorageKeys(this.config.clientId);
     }
 
     @queueRequest("msal-access-token-{0}")

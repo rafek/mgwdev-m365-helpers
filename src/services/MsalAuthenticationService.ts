@@ -1,5 +1,6 @@
 import * as Msal from "msal";
 import { TokenUtils } from "../utils";
+import { MsalCacheUtils } from "../utils/MsalCacheUtils";
 import { queueRequest } from "../utils/FunctionUtils";
 import { IAuthenticationService } from "./IAuthenticationService";
 
@@ -53,6 +54,11 @@ export class MsalAuthenticationService implements IAuthenticationService {
     public async logout(): Promise<void> {
         this.msalInstance.logout();
         this.resourceTokenMap.clear();
+    }
+
+    public async clearCache(): Promise<void> {
+        this.resourceTokenMap.clear();
+        MsalCacheUtils.clearStorageKeys(this.clientId);
     }
 
     public async getAccessToken(resource: string = "https://graph.microsoft.com"): Promise<string> {

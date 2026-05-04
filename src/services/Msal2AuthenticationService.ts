@@ -1,4 +1,5 @@
 import { AuthenticationResult, InteractionRequiredAuthError, PublicClientApplication } from '@azure/msal-browser';
+import { MsalCacheUtils } from '../utils/MsalCacheUtils';
 import { TokenUtils } from '../utils/TokenUtils';
 import { IAuthenticationService } from './IAuthenticationService';
 import { queueRequest } from '../utils/FunctionUtils';
@@ -96,6 +97,13 @@ export class Msal2AuthenticationService implements IAuthenticationService {
                 this.storage.removeItem(key);
             }
         }
+    }
+
+    public async clearCache(): Promise<void> {
+        this.resourceTokenMap.clear();
+        await this.msalObj.initialize();
+        await this.msalObj.clearCache();
+        MsalCacheUtils.clearStorageKeys(this.config.clientId);
     }
 
     public async isAuthenticated(): Promise<boolean> {
