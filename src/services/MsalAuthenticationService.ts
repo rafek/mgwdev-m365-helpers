@@ -1,5 +1,6 @@
 import * as Msal from "msal";
 import { TokenUtils } from "../utils";
+import { MsalCacheUtils } from "../utils/MsalCacheUtils";
 import { queueRequest } from "../utils/FunctionUtils";
 import { IAuthenticationService } from "./IAuthenticationService";
 
@@ -57,14 +58,7 @@ export class MsalAuthenticationService implements IAuthenticationService {
 
     public async clearCache(): Promise<void> {
         this.resourceTokenMap.clear();
-        for (const storage of [localStorage, sessionStorage]) {
-            const keys = Object.keys(storage);
-            for (const key of keys) {
-                if (key.startsWith(`msal.${this.clientId}.`) || key.includes(this.clientId)) {
-                    storage.removeItem(key);
-                }
-            }
-        }
+        MsalCacheUtils.clearStorageKeys(this.clientId);
     }
 
     public async getAccessToken(resource: string = "https://graph.microsoft.com"): Promise<string> {
