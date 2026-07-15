@@ -33,7 +33,7 @@ export class DataversePagedDataProvider<T> extends ODataPagedDataProvider<T> {
     protected override async callGraphAPI(url: string): Promise<T[]> {
         let response = await this.apiClient.get(url, {
             headers: {
-                "Prefer": `odata.maxpagesize=${this.pageSize}`,
+                "Prefer": `odata.maxpagesize=${this.pageSize},odata.include-annotations=*`,
                 "OData-MaxVersion": "4.0",
                 "OData-Version": "4.0",
                 "accept": "application/json"

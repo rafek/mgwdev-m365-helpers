@@ -62,7 +62,7 @@ export class ODataQueryBuilder implements IQueryBuilder {
                     }
                     else {
                         newQuery = `${fieldInfo.name} ${fieldInfo.comparer.toLocaleLowerCase().replace('geq', 'ge').replace("leq","le").replace("neq","ne")} `;
-                        if (fieldInfo.type && (fieldInfo.type === "Number" || fieldInfo.type === "Counter" || fieldInfo.type === "Integer")) {
+                        if (fieldInfo.type && (fieldInfo.type === "Number" || fieldInfo.type === "Counter" || fieldInfo.type === "Integer" || fieldInfo.type === "Boolean")) {
                             newQuery += fieldInfo.value;
                         }
                         else if (fieldInfo.type && (fieldInfo.type === "Guid")) {
