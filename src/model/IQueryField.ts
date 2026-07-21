@@ -35,6 +35,7 @@ export interface IQueryField {
     | 'Neq'
     | 'NotIncludes'
     | 'Values'
-    | 'CurrentUserGroups';
+    | 'CurrentUserGroups'
+    | 'E:';
   includeTimeValue?: boolean;
 }
